@@ -19,8 +19,8 @@ db.connect((err) => {
 // Add workout
 app.post('/api/workouts', (req, res) => {
     const workout = req.body;
-    const sql = 'INSERT INTO workouts (exercise, category, duration, date) VALUES (?, ?, ?, ?)';
-    db.query(sql, [workout.exercise, workout.category, workout.duration, workout.date], (err, result) => {
+    const sql = 'INSERT INTO workouts (exercise, category, duration, month, day, year) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [workout.exercise, workout.category, workout.duration, workout.month, workout.day, workout.year], (err, result) => {
         if (err) throw err;
         res.send('Workout added');
     });

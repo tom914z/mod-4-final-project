@@ -14,12 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const exercise = document.getElementById('exercise').value;
         const category = document.getElementById('category').value;
         const duration = document.getElementById('duration').value;
+        const month = document.getElementById('month').value;
+        const day = document.getElementById('day').value;
+        const year = document.getElementById('year').value;
 
         const newWorkout = {
             exercise,
             category,
             duration,
-            date: new Date().toLocaleDateString()
+            month,
+            day,
+            year
         };
 
         addWorkout(newWorkout);
@@ -34,18 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to add workout to the table and save to database (simulated)
     function addWorkout(workout) {
-        // For now, this only adds to the table. You can later send it to your backend server.
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${workout.exercise}</td>
             <td>${workout.category}</td>
             <td>${workout.duration}</td>
-            <td>${workout.date}</td>
+            <td>${workout.month}</td>
+            <td>${workout.day}</td>
+            <td>${workout.year}</td>
         `;
         workoutTableBody.appendChild(row);
 
-        // Send to backend (simulate by logging)
-        console.log('Workout added:', workout);
+        // Send to backend
+        fetch('/api/workouts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(workout)
+        }).then(res => res.text()).then(data => {
+            console.log(data);
+        });
     }
 
     // Function to clear form after submission
@@ -53,22 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
         workoutForm.reset();
     }
 
-    // Function to fetch existing workouts from backend (simulated)
+    // Function to fetch existing workouts from backend
     function fetchWorkouts() {
-        // Simulate fetching data from the backend
-        const existingWorkouts = [
-        
-        ];
-
-        existingWorkouts.forEach(workout => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${workout.exercise}</td>
-                <td>${workout.category}</td>
-                <td>${workout.duration}</td>
-                <td>${workout.date}</td>
-            `;
-            workoutTableBody.appendChild(row);
+        fetch('/api/workouts')
+        .then(res => res.json())
+        .then(workouts => {
+            workouts.forEach(workout => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${workout.exercise}</td>
+                    <td>${workout.category}</td>
+                    <td>${workout.duration}</td>
+                    <td>${workout.month}</td>
+                    <td>${workout.day}</td>
+                    <td>${workout.year}</td>
+                `;
+                workoutTableBody.appendChild(row);
+            });
         });
     }
 });

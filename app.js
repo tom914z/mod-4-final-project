@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const workoutForm = document.getElementById('workout-form');
     const workoutTableBody = document.querySelector('#workout-table tbody');
-    const fitnessGoalInput = document.getElementById('fitness-goal');
-    const setGoalBtn = document.getElementById('set-goal');
-    const goalMessage = document.getElementById('goal-message');
-    
+    const removeWorkoutBtn = document.getElementById('remove-workout');
+
     // Fetch and display existing workouts on load
     fetchWorkouts();
 
@@ -14,21 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const exercise = document.getElementById('exercise').value;
         const category = document.getElementById('category').value;
         const duration = document.getElementById('duration').value;
+    
         const month = document.getElementById('month').value;
         const day = document.getElementById('day').value;
         const year = document.getElementById('year').value;
-
-        const newWorkout = {
-            exercise,
-            category,
-            duration,
-            month,
-            day,
-            year
-        };
-
+    
+        console.log('Form values:', { exercise, category, duration, month, day, year }); // Log to check input
+    
+        const newWorkout = { exercise, category, duration, month, day, year };
+    
         addWorkout(newWorkout);
         clearForm();
+    });
+
+    // Handle the remove workout action
+    removeWorkoutBtn.addEventListener('click', function() {
+        if (workoutTableBody.lastChild) {
+            workoutTableBody.removeChild(workoutTableBody.lastChild);
+        } else {
+            console.log("No workouts to remove");
+        }
     });
 
     // Set fitness goal
@@ -37,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
         goalMessage.innerText = `Your goal is set to ${goal} minutes per week!`;
     });
 
-    // Function to add workout to the table and save to database (simulated)
     function addWorkout(workout) {
+        console.log('Adding workout:', workout); // Log the workout data
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${workout.exercise}</td>
@@ -49,16 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${workout.year}</td>
         `;
         workoutTableBody.appendChild(row);
-
+    
         // Send to backend
         fetch('/api/workouts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(workout)
-        }).then(res => res.text()).then(data => {
-            console.log(data);
-        });
+        }).then(res => res.text())
+        .then(data => {
+            console.log('Server response:', data);
+        }).catch(error => console.error('Error:', error));
     }
+       
 
     // Function to clear form after submission
     function clearForm() {

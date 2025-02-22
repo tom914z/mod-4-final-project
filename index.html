@@ -14,7 +14,7 @@
         <form id="workout-form">
             <h2>Log Workout</h2>
             <label for="exercise">Exercise:</label>
-            <input type="text" id="exercise" name="exercise" required>
+            <input type="text" id="exercise" name="exercise" placeholder="Enter the type of exercise" required>
             
             <label for="category">Category:</label>
             <select id="category" name="category" required>
@@ -24,9 +24,9 @@
             </select>
 
             <label for="duration">Duration (minutes):</label>
-            <input type="number" id="duration" name="duration" required>
+            <input type="text" id="duration" name="duration" placeholder="Enter minutes" required>
 
-            <!-- Replace month input with a text field -->
+            <!-- New fields for month, day, and year as text inputs -->
             <label for="month">Month:</label>
             <input type="text" id="month" name="month" placeholder="Enter month" required>
 
@@ -36,7 +36,10 @@
             <label for="year">Year:</label>
             <input type="text" id="year" name="year" placeholder="Enter year" required>
 
-            <button type="submit">Add Workout</button>
+            <div class="buttons">
+                <button type="submit">Add Workout</button>
+                <button type="button" id="remove-workout">Remove Last Workout</button>
+            </div>
         </form>
 
         <!-- Table to display workout statistics -->
@@ -53,9 +56,9 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Workout logs will be displayed here -->
+                <!-- Rows will be appended here -->
             </tbody>
-        </table>
+        </table>        
 
     <script src="app.js"></script>
 </body>
